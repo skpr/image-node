@@ -1,32 +1,20 @@
 #!/usr/bin/make -f
 
-IMAGE=skpr/node
+REGISTRY=skpr/node
+ALPINE_VERSION=3.14
+NODE_VERSION=16
+ARCH=amd64
+VERSION_TAG=v2-latest
+IMAGE=${REGISTRY}:${NODE_VERSION}-${VERSION_TAG}
 
-define buildimage
-  docker build --build-arg ALPINE_VERSION=$(1) --build-arg NODE_VERSION=$(2) -t $(IMAGE):$(2)-$(3) .
-endef
+build:
+	docker build --build-arg ALPINE_VERSION=${ALPINE_VERSION} --build-arg NODE_VERSION=${NODE_VERSION} -t ${IMAGE}-${ARCH} .
 
-define pushimage
-	docker push $(IMAGE):$(1)-$(2)
-endef
+push:
+	docker push ${IMAGE}-${ARCH}
 
-build: build12 build14 build16
-
-lint:
-	hadolint Dockerfile
-
-build12:
-	$(call buildimage,3.12,12,1.x)
-
-build14:
-	$(call buildimage,3.13,14,1.x)
-
-build16:
-	$(call buildimage,3.14,16,1.x)
-
-push: build
-	$(call pushimage,12,1.x)
-	$(call pushimage,14,1.x)
-	$(call pushimage,16,1.x)
+manifest:
+	docker manifest create ${IMAGE} --amend ${IMAGE}-arm64 --amend ${IMAGE}-amd64
+	docker manifest push ${IMAGE}
 
 .PHONY: *
