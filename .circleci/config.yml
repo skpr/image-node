@@ -17,6 +17,7 @@ platforms: &platforms
 node_versions: &node_versions
   - "14"
   - "16"
+  - "18"
 
 workflows:
   build:
