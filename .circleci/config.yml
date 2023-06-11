@@ -23,7 +23,7 @@ workflows:
   build:
     jobs:
       # Default build.
-      - build:
+      - build_test:
           stream: test
           push: false
           context: docker-publishing
@@ -36,7 +36,7 @@ workflows:
               ignore: [ main, releases ]
 
       # Build edge (main).
-      - build:
+      - build_edge:
           stream: edge
           context: docker-publishing
           matrix:
@@ -46,10 +46,10 @@ workflows:
           filters:
             branches:
               only: [ main ]
-      - manifest:
+      - manifest_edge:
           stream: edge
           context: docker-publishing
-          requires: [ build ]
+          requires: [ build_edge ]
           matrix:
             parameters:
               node_version: *node_versions
@@ -58,7 +58,7 @@ workflows:
               only: [ main ]
 
       # Build latest (releases).
-      - build:
+      - build_latest:
           stream: latest
           context: docker-publishing
           matrix:
@@ -68,10 +68,10 @@ workflows:
           filters:
             branches:
               only: [ releases ]
-      - manifest:
+      - manifest_latest:
           stream: latest
           context: docker-publishing
-          requires: [ build ]
+          requires: [ build_latest ]
           matrix:
             parameters:
               node_version: *node_versions
