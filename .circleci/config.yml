@@ -52,7 +52,7 @@ workflows:
           name: manifest_edge
           stream: edge
           context: docker-publishing
-          requires: [ build_edge ]
+          requires: [ build ]
           matrix:
             parameters:
               node_version: *node_versions
@@ -76,7 +76,7 @@ workflows:
           name: manifest_latest
           stream: latest
           context: docker-publishing
-          requires: [ build_latest ]
+          requires: [ build ]
           matrix:
             parameters:
               node_version: *node_versions
