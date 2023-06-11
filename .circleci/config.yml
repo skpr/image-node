@@ -24,7 +24,7 @@ workflows:
     jobs:
       # Default build.
       - build:
-          name: build_test
+          alias: build_test
           stream: test
           push: false
           context: docker-publishing
@@ -38,7 +38,7 @@ workflows:
 
       # Build edge (main).
       - build:
-          name: build_edge
+          alias: build_edge
           stream: edge
           context: docker-publishing
           matrix:
@@ -49,7 +49,7 @@ workflows:
             branches:
               only: [ main ]
       - manifest:
-          name: manifest_edge
+          alias: manifest_edge
           stream: edge
           context: docker-publishing
           requires: [ build ]
@@ -62,7 +62,7 @@ workflows:
 
       # Build latest (releases).
       - build:
-          name: build_latest
+          alias: build_latest
           stream: latest
           context: docker-publishing
           matrix:
@@ -73,7 +73,7 @@ workflows:
             branches:
               only: [ releases ]
       - manifest:
-          name: manifest_latest
+          alias: manifest_latest
           stream: latest
           context: docker-publishing
           requires: [ build ]
