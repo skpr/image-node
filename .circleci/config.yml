@@ -31,7 +31,7 @@ workflows:
             parameters:
               executor: *platforms
               node_version: *node_versions
-          filter:
+          filters:
             branches:
               ignore: [ main, releases ]
 
@@ -155,7 +155,8 @@ jobs:
             make build ARCH=<< parameters.executor >> NODE_VERSION=<< parameters.node_version >> VERSION_TAG=v2-<< parameters.stream >>
             make build ARCH=<< parameters.executor >> NODE_VERSION=<< parameters.node_version >> VERSION_TAG=${SHA1_VERSION}
       - when:
-          when: << parameters.push >>
+          condition:
+            equal: [ true, << parameters.push >> ]
           steps:
             - run:
                 name: "Push image"
