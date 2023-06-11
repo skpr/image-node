@@ -22,13 +22,32 @@ node_versions: &node_versions
 workflows:
   build:
     jobs:
+      # Default build.
       - build:
+          stream: test
+          push: false
           context: docker-publishing
           matrix:
             parameters:
               executor: *platforms
               node_version: *node_versions
+          filter:
+            branches:
+              ignore: [ main, releases ]
+
+      # Build edge (main).
+      - build:
+          stream: edge
+          context: docker-publishing
+          matrix:
+            parameters:
+              executor: *platforms
+              node_version: *node_versions
+          filters:
+            branches:
+              only: [ main ]
       - manifest:
+          stream: edge
           context: docker-publishing
           requires: [ build ]
           matrix:
@@ -38,15 +57,39 @@ workflows:
             branches:
               only: [ main ]
 
-  nightly:
+      # Build latest (releases).
+      - build:
+          stream: latest
+          context: docker-publishing
+          matrix:
+            parameters:
+              executor: *platforms
+              node_version: *node_versions
+          filters:
+            branches:
+              only: [ releases ]
+      - manifest:
+          stream: latest
+          context: docker-publishing
+          requires: [ build ]
+          matrix:
+            parameters:
+              node_version: *node_versions
+          filters:
+            branches:
+              only: [ releases ]
+
+  nightly_edge:
     jobs:
       - build:
+          stream: edge
           context: docker-publishing
           matrix:
             parameters:
               executor: *platforms
               node_version: *node_versions
       - manifest:
+          stream: edge
           context: docker-publishing
           requires: [ build ]
           matrix:
@@ -63,12 +106,44 @@ workflows:
             branches:
               only: [ main ]
 
+  nightly_latest:
+    jobs:
+      - build:
+          stream: latest
+          context: docker-publishing
+          matrix:
+            parameters:
+              executor: *platforms
+              node_version: *node_versions
+      - manifest:
+          stream: latest
+          context: docker-publishing
+          requires: [ build ]
+          matrix:
+            parameters:
+              node_version: *node_versions
+          filters:
+            branches:
+              only: [ releases ]
+    triggers:
+      - schedule:
+          # Scheduled build for 2am AEST nightly.
+          cron: "0 15 * * *"
+          filters:
+            branches:
+              only: [ releases ]
+
 jobs:
   build:
     parameters:
       executor:
         type: string
       node_version:
+        type: string
+      push:
+        type: boolean
+        default: true
+      stream:
         type: string
     executor: << parameters.executor >>
     steps:
@@ -77,24 +152,25 @@ jobs:
           name: Build, Test and Release
           command: |
             SHA1_VERSION="v2-$(git rev-parse --short HEAD)"
-            make build ARCH=<< parameters.executor >> NODE_VERSION=<< parameters.node_version >> VERSION_TAG=v2-latest
+            make build ARCH=<< parameters.executor >> NODE_VERSION=<< parameters.node_version >> VERSION_TAG=v2-<< parameters.stream >>
             make build ARCH=<< parameters.executor >> NODE_VERSION=<< parameters.node_version >> VERSION_TAG=${SHA1_VERSION}
       - when:
-          condition:
-            equal: ["main", << pipeline.git.branch >> ]
+          when: << parameters.push >>
           steps:
             - run:
                 name: "Push image"
                 command: |
                   echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
                   SHA1_VERSION="v2-$(git rev-parse --short HEAD)"
-                  make push ARCH=<< parameters.executor >> NODE_VERSION=<< parameters.node_version >> VERSION_TAG=v2-latest
+                  make push ARCH=<< parameters.executor >> NODE_VERSION=<< parameters.node_version >> VERSION_TAG=v2-<< parameters.stream >>
                   make push ARCH=<< parameters.executor >> NODE_VERSION=<< parameters.node_version >> VERSION_TAG=${SHA1_VERSION}
   manifest:
     docker:
       - image: cimg/base:2022.02
     parameters:
       node_version:
+        type: string
+      stream:
         type: string
     steps:
       - checkout
@@ -107,5 +183,5 @@ jobs:
             export DOCKER_CLI_EXPERIMENTAL=enabled
             echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
             SHA1_VERSION="v2-$(git rev-parse --short HEAD)"
-            make manifest NODE_VERSION=<< parameters.node_version >> VERSION_TAG=v2-latest
+            make manifest NODE_VERSION=<< parameters.node_version >> VERSION_TAG=v2-<< parameters.stream >>
             make manifest NODE_VERSION=<< parameters.node_version >> VERSION_TAG=${SHA1_VERSION}
