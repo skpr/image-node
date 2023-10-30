@@ -18,7 +18,6 @@ node_versions: &node_versions
   - "16"
   - "18"
   - "20"
-  - "21"
 
 workflows:
   build_test:

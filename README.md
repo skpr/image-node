@@ -29,9 +29,7 @@ docker.io/skpr/node:14-v2-edge (Depreciated. Will not receive updates.)
 docker.io/skpr/node:16-v2-edge
 docker.io/skpr/node:18-v2-edge
 docker.io/skpr/node:20-v2-edge
-docker.io/skpr/node:21-v2-edge
 docker.io/skpr/node:dev-16-v2-edge
 docker.io/skpr/node:dev-18-v2-edge
 docker.io/skpr/node:dev-20-v2-edge
-docker.io/skpr/node:dev-21-v2-edge
 ```
