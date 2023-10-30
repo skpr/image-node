@@ -1,6 +1,7 @@
 ARG NODE_VERSION=16
 ARG ALPINE_VERSION=3.18
-FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION}
+ARG VERSION_TAG=v2-latest
+FROM docker.io/skpr/node:${NODE_VERSION}-${VERSION_TAG}
 
 RUN apk add --no-cache \
   bash \

@@ -11,7 +11,7 @@ build:
 	docker build --build-arg ALPINE_VERSION=${ALPINE_VERSION} --build-arg NODE_VERSION=${NODE_VERSION} -t ${IMAGE}-${ARCH} .
 	# build dev images
 	$(eval IMAGE=${REGISTRY}:dev-${NODE_VERSION}-${VERSION_TAG})
-	docker build --build-arg ALPINE_VERSION=${ALPINE_VERSION} --build-arg NODE_VERSION=${NODE_VERSION} -t ${IMAGE}-${ARCH} dev
+	docker build --build-arg ALPINE_VERSION=${ALPINE_VERSION} --build-arg NODE_VERSION=${NODE_VERSION} --build-arg VERSION_TAG=${VERSION_TAG} -t ${IMAGE}-${ARCH} dev
 
 push:
 	$(eval IMAGE=${REGISTRY}:${NODE_VERSION}-${VERSION_TAG})
