@@ -20,6 +20,7 @@ docker.io/skpr/node:16-v2-latest
 docker.io/skpr/node:18-v2-latest
 docker.io/skpr/node:dev-16-v2-latest
 docker.io/skpr/node:dev-18-v2-latest
+docker.io/skpr/node:dev-20-v2-latest
 ```
 
 **Edge**
