@@ -1,6 +1,13 @@
-ARG NODE_VERSION=16
-ARG ALPINE_VERSION=3.15
-FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION}
+ARG FROM_IMAGE
+FROM ${FROM_IMAGE}
+
+# Libuv 1.45.0 is affected by a kernel bug on certain kernels.
+# This leads to errors where Garden tool downloading errors with ETXTBSY
+# Apparently file descriptor accounting is broken when using USE_IO_URING
+# on older kernels
+# See also: https://github.com/libuv/libuv/pull/4141/files
+# TODO: Remove this once libuv 1.47 landed in a future NodeJS version, and we upgraded to it.
+ENV UV_USE_IO_URING=0
 
 RUN apk add --no-cache \
   bash \
@@ -9,7 +16,8 @@ RUN apk add --no-cache \
   git \
   make \
   openssh-client \
-  python2 \
+  python3 \
+  tar \
   # Below are for packages such as https://www.npmjs.com/package/imagemin
   autoconf \
   automake \
