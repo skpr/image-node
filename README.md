@@ -18,6 +18,7 @@ This image suite provides 2 streams for images:
 docker.io/skpr/node:14-v2-latest (Depreciated. Will not receive updates.)
 docker.io/skpr/node:16-v2-latest
 docker.io/skpr/node:18-v2-latest
+docker.io/skpr/node:20-v2-latest
 docker.io/skpr/node:dev-16-v2-latest
 docker.io/skpr/node:dev-18-v2-latest
 docker.io/skpr/node:dev-20-v2-latest
