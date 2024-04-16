@@ -15,7 +15,6 @@ platforms: &platforms
   - arm64
 
 node_versions: &node_versions
-  - "16"
   - "18"
   - "20"
 
