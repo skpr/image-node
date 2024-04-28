@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 
 REGISTRY=skpr/node
-ALPINE_VERSION=3.18
+ALPINE_VERSION=3.19
 NODE_VERSION=20
 ARCH=amd64
 VERSION_TAG=v2-latest
