@@ -32,8 +32,10 @@ docker.io/skpr/node:14-v2-edge (Unsupported. Will not receive updates.)
 docker.io/skpr/node:16-v2-edge (Unsupported. Will not receive updates.)
 docker.io/skpr/node:18-v2-edge
 docker.io/skpr/node:20-v2-edge
+docker.io/skpr/node:22-v2-edge
 
 docker.io/skpr/node:dev-16-v2-edge
 docker.io/skpr/node:dev-18-v2-edge
 docker.io/skpr/node:dev-20-v2-edge
+docker.io/skpr/node:dev-22-v2-edge
 ```
