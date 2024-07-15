@@ -17,6 +17,7 @@ platforms: &platforms
 node_versions: &node_versions
   - "18"
   - "20"
+  - "22"
 
 workflows:
   build_test:
@@ -55,6 +56,29 @@ workflows:
           filters:
             branches:
               only: [ main ]
+
+  build_stable:
+    jobs:
+      - build:
+          stream: stable
+          context: docker-publishing
+          matrix:
+            parameters:
+              executor: *platforms
+              node_version: *node_versions
+          filters:
+            branches:
+              only: [ releases ]
+      - manifest:
+          stream: stable
+          context: docker-publishing
+          requires: [ build ]
+          matrix:
+            parameters:
+              node_version: *node_versions
+          filters:
+            branches:
+              only: [ releases ]
 
   build_latest:
     jobs:
@@ -105,6 +129,33 @@ workflows:
           filters:
             branches:
               only: [ main ]
+
+  nightly_stable:
+    jobs:
+      - build:
+          stream: stable
+          context: docker-publishing
+          matrix:
+            parameters:
+              executor: *platforms
+              node_version: *node_versions
+      - manifest:
+          stream: stable
+          context: docker-publishing
+          requires: [ build ]
+          matrix:
+            parameters:
+              node_version: *node_versions
+          filters:
+            branches:
+              only: [ releases ]
+    triggers:
+      - schedule:
+          # Scheduled build for 2am AEST nightly.
+          cron: "0 15 * * *"
+          filters:
+            branches:
+              only: [ releases ]
 
   nightly_latest:
     jobs:
