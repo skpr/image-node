@@ -12,10 +12,8 @@ ENV UV_USE_IO_URING=0
 RUN apk add --no-cache \
   bash \
   ca-certificates \
-  curl \
   g++ \
   git \
-  jq \
   make \
   openssh-client \
   python3 \
