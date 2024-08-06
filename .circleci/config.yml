@@ -34,29 +34,6 @@ workflows:
             branches:
               ignore: [ main, releases ]
 
-  build_edge:
-    jobs:
-      - build:
-          stream: edge
-          context: docker-publishing
-          matrix:
-            parameters:
-              executor: *platforms
-              node_version: *node_versions
-          filters:
-            branches:
-              only: [ main ]
-      - manifest:
-          stream: edge
-          context: docker-publishing
-          requires: [ build ]
-          matrix:
-            parameters:
-              node_version: *node_versions
-          filters:
-            branches:
-              only: [ main ]
-
   build_stable:
     jobs:
       - build:
@@ -91,7 +68,7 @@ workflows:
               node_version: *node_versions
           filters:
             branches:
-              only: [ releases ]
+              only: [ main ]
       - manifest:
           stream: latest
           context: docker-publishing
@@ -99,33 +76,6 @@ workflows:
           matrix:
             parameters:
               node_version: *node_versions
-          filters:
-            branches:
-              only: [ releases ]
-
-  nightly_edge:
-    jobs:
-      - build:
-          stream: edge
-          context: docker-publishing
-          matrix:
-            parameters:
-              executor: *platforms
-              node_version: *node_versions
-      - manifest:
-          stream: edge
-          context: docker-publishing
-          requires: [ build ]
-          matrix:
-            parameters:
-              node_version: *node_versions
-          filters:
-            branches:
-              only: [ main ]
-    triggers:
-      - schedule:
-          # Scheduled build for 2am AEST nightly.
-          cron: "0 15 * * *"
           filters:
             branches:
               only: [ main ]
@@ -175,14 +125,14 @@ workflows:
               node_version: *node_versions
           filters:
             branches:
-              only: [ releases ]
+              only: [ main ]
     triggers:
       - schedule:
           # Scheduled build for 2am AEST nightly.
           cron: "0 15 * * *"
           filters:
             branches:
-              only: [ releases ]
+              only: [ main ]
 
 jobs:
   build:
