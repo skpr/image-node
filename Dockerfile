@@ -1,6 +1,13 @@
 ARG FROM_IMAGE
 FROM ${FROM_IMAGE}
 
+# Disable all interactive post install scripts
+# This is a security measure to avoid running arbitrary code during package installation
+# See also:
+# - https://socket.dev/blog/ongoing-supply-chain-attack-targets-crowdstrike-npm-packages
+ENV YARN_ENABLE_SCRIPTS=false
+ENV NPM_CONFIG_IGNORE_SCRIPTS=true
+
 # Libuv 1.45.0 is affected by a kernel bug on certain kernels.
 # This leads to errors where Garden tool downloading errors with ETXTBSY
 # Apparently file descriptor accounting is broken when using USE_IO_URING
