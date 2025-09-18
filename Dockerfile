@@ -8,6 +8,12 @@ FROM ${FROM_IMAGE}
 ENV YARN_ENABLE_SCRIPTS=false
 ENV NPM_CONFIG_IGNORE_SCRIPTS=true
 
+# Install pnpm. Recommeded installation path.
+# See also:
+# - https://pnpm.io/docker
+RUN corepack enable
+RUN corepack prepare pnpm@10 --activate
+
 # Libuv 1.45.0 is affected by a kernel bug on certain kernels.
 # This leads to errors where Garden tool downloading errors with ETXTBSY
 # Apparently file descriptor accounting is broken when using USE_IO_URING
