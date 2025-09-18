@@ -13,6 +13,8 @@ ENV NPM_CONFIG_IGNORE_SCRIPTS=true
 # - https://pnpm.io/docker
 RUN corepack enable
 RUN corepack prepare pnpm@10 --activate
+RUN echo "PNPM Version during build:"
+RUN pnpm --version
 
 # Libuv 1.45.0 is affected by a kernel bug on certain kernels.
 # This leads to errors where Garden tool downloading errors with ETXTBSY
