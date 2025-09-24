@@ -14,6 +14,8 @@ build:
 	docker build --build-arg FROM_IMAGE=node:${NODE_VERSION}-alpine${ALPINE_VERSION} -t ${IMAGE}-${ARCH} .
 	# Building development image.
 	docker build --build-arg FROM_IMAGE=${IMAGE}-${ARCH} -t ${IMAGE_DEV}-${ARCH} dev
+	# Testing development image.
+	container-structure-test test --image ${IMAGE_DEV}-${ARCH} --config tests.yml
 
 push:
 	# Pushing production image.
