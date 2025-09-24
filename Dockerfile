@@ -1,14 +1,6 @@
 ARG FROM_IMAGE
 FROM ${FROM_IMAGE}
 
-# Install pnpm. Recommeded installation path.
-# See also:
-# - https://pnpm.io/docker
-RUN corepack enable && \
-    corepack prepare pnpm@10 --activate && \
-    echo "PNPM Version during build:" && \
-    pnpm --version
-
 # Libuv 1.45.0 is affected by a kernel bug on certain kernels.
 # This leads to errors where Garden tool downloading errors with ETXTBSY
 # Apparently file descriptor accounting is broken when using USE_IO_URING
@@ -50,6 +42,10 @@ RUN chmod +x /usr/local/bin/npm
 RUN mv /usr/local/bin/yarn /usr/local/bin/yarn-unsafe
 ADD --chown=skpr:skpr bin/yarn-wrapper /usr/local/bin/yarn
 RUN chmod +x /usr/local/bin/yarn
+
+# Install pnpm globally using the unsafe npm.
+# @todo, To be replaced with APK package when available (We want 10+).
+RUN npm-unsafe install -g pnpm@10
 
 USER skpr
 
