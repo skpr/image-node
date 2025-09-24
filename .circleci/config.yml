@@ -152,8 +152,8 @@ jobs:
       - run:
           name: Build, Test and Release
           command: |
-            SHA1_VERSION="v2-$(git rev-parse --short HEAD)"
-            make build ARCH=<< parameters.executor >> NODE_VERSION=<< parameters.node_version >> VERSION_TAG=v2-<< parameters.stream >>
+            SHA1_VERSION="v3-$(git rev-parse --short HEAD)"
+            make build ARCH=<< parameters.executor >> NODE_VERSION=<< parameters.node_version >> VERSION_TAG=v3-<< parameters.stream >>
             make build ARCH=<< parameters.executor >> NODE_VERSION=<< parameters.node_version >> VERSION_TAG=${SHA1_VERSION}
       - when:
           condition:
@@ -163,8 +163,8 @@ jobs:
                 name: "Push image"
                 command: |
                   echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-                  SHA1_VERSION="v2-$(git rev-parse --short HEAD)"
-                  make push ARCH=<< parameters.executor >> NODE_VERSION=<< parameters.node_version >> VERSION_TAG=v2-<< parameters.stream >>
+                  SHA1_VERSION="v3-$(git rev-parse --short HEAD)"
+                  make push ARCH=<< parameters.executor >> NODE_VERSION=<< parameters.node_version >> VERSION_TAG=v3-<< parameters.stream >>
                   make push ARCH=<< parameters.executor >> NODE_VERSION=<< parameters.node_version >> VERSION_TAG=${SHA1_VERSION}
   manifest:
     docker:
@@ -183,6 +183,6 @@ jobs:
           command: |
             export DOCKER_CLI_EXPERIMENTAL=enabled
             echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-            SHA1_VERSION="v2-$(git rev-parse --short HEAD)"
-            make manifest NODE_VERSION=<< parameters.node_version >> VERSION_TAG=v2-<< parameters.stream >>
+            SHA1_VERSION="v3-$(git rev-parse --short HEAD)"
+            make manifest NODE_VERSION=<< parameters.node_version >> VERSION_TAG=v3-<< parameters.stream >>
             make manifest NODE_VERSION=<< parameters.node_version >> VERSION_TAG=${SHA1_VERSION}

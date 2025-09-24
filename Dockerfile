@@ -1,20 +1,13 @@
 ARG FROM_IMAGE
 FROM ${FROM_IMAGE}
 
-# Disable all interactive post install scripts
-# This is a security measure to avoid running arbitrary code during package installation
-# See also:
-# - https://socket.dev/blog/ongoing-supply-chain-attack-targets-crowdstrike-npm-packages
-ENV YARN_ENABLE_SCRIPTS=false
-ENV NPM_CONFIG_IGNORE_SCRIPTS=true
-
 # Install pnpm. Recommeded installation path.
 # See also:
 # - https://pnpm.io/docker
-RUN corepack enable
-RUN corepack prepare pnpm@10 --activate
-RUN echo "PNPM Version during build:"
-RUN pnpm --version
+RUN corepack enable && \
+    corepack prepare pnpm@10 --activate && \
+    echo "PNPM Version during build:" && \
+    pnpm --version
 
 # Libuv 1.45.0 is affected by a kernel bug on certain kernels.
 # This leads to errors where Garden tool downloading errors with ETXTBSY
@@ -42,12 +35,21 @@ RUN apk add --no-cache \
   util-linux \
   vips-dev
 
-
 RUN deluser node
 RUN adduser -D -u 1000 skpr
 RUN mkdir /data && chown skpr:skpr /data
 
 WORKDIR /data
+
+# Replace npm with a wrapper script to enforce security.
+RUN mv /usr/local/bin/npm /usr/local/bin/npm-unsafe
+ADD --chown=skpr:skpr bin/npm-wrapper /usr/local/bin/npm
+RUN chmod +x /usr/local/bin/npm
+
+# Replace yarn with a wrapper script to enforce security.
+RUN mv /usr/local/bin/yarn /usr/local/bin/yarn-unsafe
+ADD --chown=skpr:skpr bin/yarn-wrapper /usr/local/bin/yarn
+RUN chmod +x /usr/local/bin/yarn
 
 USER skpr
 
