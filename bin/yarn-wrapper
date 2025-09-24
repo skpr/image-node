@@ -1,0 +1,35 @@
+#!/bin/sh
+
+# Disable all interactive post install scripts
+# This is a security measure to avoid running arbitrary code during package installation
+# See also:
+# - https://socket.dev/blog/ongoing-supply-chain-attack-targets-crowdstrike-npm-packages
+export YARN_ENABLE_SCRIPTS=true
+
+cat <<'EOF'
+============================================================
+⚠️  DISCLAIMER: Package lifecycle scripts are disabled ⚠️
+============================================================
+
+Environment variable enforced:
+  YARN_ENABLE_SCRIPTS=true
+
+Scripts will NOT run during yarn install.
+
+If you need to bypass this restriction (not recommended),
+you must explicitly invoke:
+
+  yarn-unsafe <command>
+
+⚠️  WARNING: Running with yarn-unsafe allows untrusted scripts
+    to execute and may compromise your system.
+
+------------------------------------------------------------
+From the Skpr Platform Team
+============================================================
+EOF
+
+# Put a gap between the disclaimer and the command output
+echo
+
+yarn-unsafe "$@"
