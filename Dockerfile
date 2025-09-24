@@ -43,9 +43,9 @@ RUN mv /usr/local/bin/yarn /usr/local/bin/yarn-unsafe
 ADD --chown=skpr:skpr bin/yarn-wrapper /usr/local/bin/yarn
 RUN chmod +x /usr/local/bin/yarn
 
-# Install pnpm globally using the unsafe npm.
+# Install pnpm globally using the "safe" npm wrapper.
 # @todo, To be replaced with APK package when available (We want 10+).
-RUN npm-unsafe install -g pnpm@10
+RUN npm install -g pnpm@10
 
 USER skpr
 
