@@ -1,5 +1,4 @@
-ARG FROM_IMAGE
-FROM ${FROM_IMAGE}
+FROM base
 
 # Libuv 1.45.0 is affected by a kernel bug on certain kernels.
 # This leads to errors where Garden tool downloading errors with ETXTBSY
