@@ -1,5 +1,4 @@
-ARG FROM_IMAGE
-FROM ${FROM_IMAGE}
+FROM base
 
 # Libuv 1.45.0 is affected by a kernel bug on certain kernels.
 # This leads to errors where Garden tool downloading errors with ETXTBSY
@@ -49,4 +48,4 @@ RUN npm install -g pnpm@10
 
 USER skpr
 
-ENV PATH /data/node_modules/.bin:$PATH
+ENV PATH=/data/node_modules/.bin:$PATH
