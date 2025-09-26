@@ -1,4 +1,4 @@
-FROM node:20-alpine
+FROM base AS run
 
 # Libuv 1.45.0 is affected by a kernel bug on certain kernels.
 # This leads to errors where Garden tool downloading errors with ETXTBSY
@@ -50,7 +50,11 @@ USER skpr
 
 ENV PATH /data/node_modules/.bin:$PATH
 
-# Run the tests.
+# Temporary build stage where we can run the test suite.
+FROM run AS test
 COPY --from=ghcr.io/goss-org/goss:latest /usr/bin/goss /usr/bin/goss
 ADD goss.yml /etc/goss/goss.yml
 RUN goss --gossfile=/etc/goss/goss.yml validate
+
+# Swap back to the run stage.
+FROM run
