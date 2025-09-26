@@ -1,0 +1,18 @@
+command:
+  npm:
+    exec: "npm --help"
+    exit-status: 1
+    stdout:
+      - DISCLAIMER
+
+  yarn:
+    exec: "yarn --help"
+    exit-status: 0
+    stdout:
+      - DISCLAIMER
+
+  pnpm:
+    exec: "pnpm --help"
+    exit-status: 0
+    stdout:
+      - "compiled to binary"
