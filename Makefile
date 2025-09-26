@@ -5,7 +5,7 @@ STREAM=latest
 
 # Example build command for local development.
 # See Github Action for multi-arch and multi-stream building.
-bake:
+nbake:
 	NODE_VERSION=${NODE_VERSION} STREAM=${STREAM} docker buildx bake
 
 .PHONY: *
