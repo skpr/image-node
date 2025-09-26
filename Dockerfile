@@ -1,4 +1,4 @@
-FROM base
+FROM node:20-alpine
 
 # Libuv 1.45.0 is affected by a kernel bug on certain kernels.
 # This leads to errors where Garden tool downloading errors with ETXTBSY
@@ -49,3 +49,8 @@ RUN npm install -g pnpm@10
 USER skpr
 
 ENV PATH /data/node_modules/.bin:$PATH
+
+# Run the tests.
+COPY --from=ghcr.io/goss-org/goss:latest /usr/bin/goss /usr/bin/goss
+ADD goss.yml /etc/goss/goss.yml
+RUN goss --gossfile=/etc/goss/goss.yml validate
