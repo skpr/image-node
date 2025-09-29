@@ -4,8 +4,6 @@ on:
   pull_request: ~
 
 env:
-  alpine: "3.21"
-  version: "v3"
   stream: "pr-${{ github.event.pull_request.number }}"
 
 jobs:
@@ -27,11 +25,5 @@ jobs:
       - name: 🏗️ Build  Docker image
         uses: docker/bake-action@v6
         env:
-          ALPINE_VERSION: ${{ env.alpine }}
           NODE_VERSION: ${{ matrix.node }}
           STREAM: ${{ env.stream }}
-          VERSION: ${{ env.version }}
-
-      - name: Test Docker image
-        run: |
-          echo make test NODE_VERSION=${{ matrix.node }}  VERSION=${{ env.version }} STREAM=${{ env.stream }}

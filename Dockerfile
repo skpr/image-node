@@ -1,4 +1,4 @@
-FROM base
+FROM from_image as base
 
 # Libuv 1.45.0 is affected by a kernel bug on certain kernels.
 # This leads to errors where Garden tool downloading errors with ETXTBSY
@@ -49,3 +49,12 @@ RUN npm install -g pnpm@10
 USER skpr
 
 ENV PATH=/data/node_modules/.bin:$PATH
+
+# Temporary build stage where we can run the test suite.
+FROM base AS test
+COPY --from=ghcr.io/goss-org/goss:latest /usr/bin/goss /usr/bin/goss
+ADD goss.yml /tmp/goss.yml
+RUN goss --gossfile=/tmp/goss.yml validate
+
+FROM base AS run
+CMD ["bash"]

@@ -23,14 +23,18 @@ variable "PLATFORMS" {
 }
 
 group "default" {
-  targets = ["prod", "dev"]
+  targets = [
+    "prod",
+    "dev",
+    "test",
+  ]
 }
 
 target "prod" {
   context = "."
 
   contexts = {
-    base = "docker-image://node:${NODE_VERSION}-alpine${ALPINE_VERSION}"
+    from_image = "docker-image://node:${NODE_VERSION}-alpine${ALPINE_VERSION}"
   }
 
   platforms = PLATFORMS
@@ -45,7 +49,7 @@ target "dev" {
   context = "dev"
 
   contexts = {
-    base = "target:prod"
+    from_image = "target:prod"
   }
 
   platforms = PLATFORMS
@@ -54,4 +58,20 @@ target "dev" {
     "docker.io/skpr/node:dev-${NODE_VERSION}-${VERSION}-${STREAM}",
     "ghcr.io/skpr/node:dev-${NODE_VERSION}-${VERSION}-${STREAM}",
   ]
+}
+
+target "test" {
+  matrix = {
+    variant = ["prod",]
+  }
+
+  name = "${variant}-test"
+
+  inherits = [variant]
+
+  # Run this stage from the Dockerfile.
+  target = "test"
+
+  # Only build the test target locally.
+  output = ["type=cacheonly"]
 }

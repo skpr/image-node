@@ -1,4 +1,4 @@
-FROM base
+FROM from_image
 
 USER root
 RUN apk add --no-cache \

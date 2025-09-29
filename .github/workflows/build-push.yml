@@ -7,22 +7,10 @@ on:
         type: string
         default: ubuntu-latest
         description: The image to run the jobs.
-      platforms:
-        type: string
-        default: linux/amd64,linux/arm64
-        description: The target platforms for the Docker image.
       stream:
         type: string
         default: latest
         description: The stream to build (e.g latest or stable).
-      version:
-        type: string
-        default: v3
-        description: The major version to use in the Docker image.
-      alpine:
-        type: string
-        default: '3.21'
-        description: The Alpine version to use in the Docker image.
       push:
         type: boolean
         default: false
@@ -68,9 +56,7 @@ jobs:
       - name: 🏗️ Build and push Docker image
         uses: docker/bake-action@v6
         env:
-          ALPINE_VERSION: ${{ inputs.alpine }}
-          NODE_VERSION: ${{ matrix.node }}
+          PHP_VERSION: ${{ matrix.php }}
           STREAM: ${{ inputs.stream }}
-          VERSION: ${{ inputs.version }}
         with:
           push: ${{ inputs.push }}
