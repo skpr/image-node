@@ -22,6 +22,15 @@ variable "PLATFORMS" {
   ]
 }
 
+variable "REGISTRIES" {
+  default = ["docker.io", "ghcr.io"]
+}
+
+# Common target: Everything inherits from this
+target "_common" {
+  platforms = PLATFORMS
+}
+
 group "default" {
   targets = [
     "prod",
@@ -31,32 +40,30 @@ group "default" {
 }
 
 target "prod" {
+  inherits = ["_common"]
   context = "."
 
   contexts = {
     from_image = "docker-image://node:${NODE_VERSION}-alpine${ALPINE_VERSION}"
   }
 
-  platforms = PLATFORMS
-
   tags = [
-    "docker.io/skpr/node:${NODE_VERSION}-${VERSION}-${STREAM}",
-    "ghcr.io/skpr/node:${NODE_VERSION}-${VERSION}-${STREAM}",
-  ] 
+    for r in REGISTRIES :
+    "${r}/skpr/node:${NODE_VERSION}-${VERSION}-${STREAM}"
+  ]
 }
 
 target "dev" {
+  inherits = ["_common"]
   context = "dev"
 
   contexts = {
     from_image = "target:prod"
   }
 
-  platforms = PLATFORMS
-
   tags = [
-    "docker.io/skpr/node:dev-${NODE_VERSION}-${VERSION}-${STREAM}",
-    "ghcr.io/skpr/node:dev-${NODE_VERSION}-${VERSION}-${STREAM}",
+    for r in REGISTRIES :
+    "${r}/skpr/node:dev-${NODE_VERSION}-${VERSION}-${STREAM}"
   ]
 }
 
