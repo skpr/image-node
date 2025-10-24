@@ -26,6 +26,10 @@ RUN apk add --no-cache \
   util-linux \
   vips-dev
 
+RUN export SKPRMAIL_VERSION=1.0.1 && \
+    curl -sSL https://github.com/skpr/mail/releases/download/v${SKPRMAIL_VERSION}/skprmail_${SKPRMAIL_VERSION}_linux_${TARGETARCH} -o /usr/local/bin/skprmail && \
+    chmod +rx /usr/local/bin/skprmail
+
 RUN deluser node
 RUN adduser -D -u 1000 skpr
 RUN mkdir /data && chown skpr:skpr /data
