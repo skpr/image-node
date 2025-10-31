@@ -3,14 +3,11 @@ name: 🏗️ Build PR
 on:
   pull_request: ~
 
-env:
-  stream: "pr-${{ github.event.pull_request.number }}"
-
 jobs:
   build:
     uses: ./.github/workflows/build-push.yml
     with:
-      stream: latest
+      stream: "pr-${{ github.event.pull_request.number }}"
       push: false
     secrets: inherit
 #  build:
