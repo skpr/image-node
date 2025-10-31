@@ -59,9 +59,12 @@ ENV PATH=/data/node_modules/.bin:$PATH
 
 # Temporary build stage where we can run the test suite.
 FROM base AS test
-COPY --from=ghcr.io/goss-org/goss:latest /usr/bin/goss /usr/bin/goss
-ADD goss.yml /tmp/goss.yml
-RUN goss --gossfile=/tmp/goss.yml validate
+
+USER root
+RUN apk add bats
+
+ADD tests.bats /tmp/tests.bats
+RUN bats /tmp/tests.bats
 
 FROM base AS run
 CMD ["bash"]
