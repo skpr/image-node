@@ -13,6 +13,8 @@ on:
         required: true
       DOCKERHUB_TOKEN:
         required: true
+      GITHUB_TOKEN:
+        required: true
 
 jobs:
   build:
@@ -44,7 +46,7 @@ jobs:
         uses: docker/bake-action@v6
         env:
           NODE_VERSION: ${{ matrix.node }}
-          STREAM: ${{ env.stream }}
+          STREAM: ${{ inputs.stream }}
         with:
           push: true
           pull: true
