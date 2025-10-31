@@ -30,4 +30,4 @@ jobs:
 
       - name: 🏗️ Build and push Docker image
         run: |
-          NODE_VERSION=${{ matrix.php }} STREAM=${{ inputs.stream }} docker buildx bake --pull --no-cache
+          NODE_VERSION=${{ matrix.php }} STREAM=${{ env.stream }} docker buildx bake --pull --no-cache
