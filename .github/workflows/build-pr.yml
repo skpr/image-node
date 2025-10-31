@@ -37,9 +37,6 @@ jobs:
         env:
           NODE_VERSION: ${{ matrix.node }}
           STREAM: ${{ env.stream }}
-<<<<<<< Updated upstream
         with:
           pull: true
           no-cache: true
-=======
->>>>>>> Stashed changes
