@@ -53,5 +53,4 @@ jobs:
           NODE_VERSION: ${{ matrix.node }}
           STREAM: ${{ inputs.stream }}
         with:
-          source: .
-          push: true
+          push: ${{ inputs.push }}
