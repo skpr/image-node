@@ -8,5 +8,5 @@ jobs:
     uses: ./.github/workflows/build-push.yml
     with:
       stream: "pr-${{ github.event.pull_request.number }}"
-      push: false
+      push: true
     secrets: inherit
