@@ -1,5 +1,7 @@
 FROM from_image AS base
 
+ARG TARGETARCH
+
 # Libuv 1.45.0 is affected by a kernel bug on certain kernels.
 # This leads to errors where Garden tool downloading errors with ETXTBSY
 # Apparently file descriptor accounting is broken when using USE_IO_URING
@@ -11,6 +13,7 @@ ENV UV_USE_IO_URING=0
 RUN apk add --no-cache \
   bash \
   ca-certificates \
+  curl \
   g++ \
   git \
   make \
