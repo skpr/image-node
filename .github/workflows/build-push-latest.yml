@@ -13,5 +13,4 @@ jobs:
     uses: ./.github/workflows/build-push.yml
     with:
       stream: latest
-      push: true
     secrets: inherit

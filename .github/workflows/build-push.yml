@@ -3,18 +3,14 @@ name: 🏗️ Build and Push
 on:
   workflow_call:
     inputs:
-      runs_on:
-        type: string
-        default: ubuntu-latest
-        description: The image to run the jobs.
       stream:
         type: string
         default: latest
         description: The stream to build (e.g latest or stable).
       push:
         type: boolean
-        default: false
-        description: Whether to push the built image to the registry.
+        default: true
+        description: Push the images up to the container registries.
 
     secrets:
       DOCKERHUB_USERNAME:
@@ -25,12 +21,7 @@ on:
 jobs:
   build:
     name: Build Docker image
-    runs-on: ${{ inputs.runs_on }}
-    permissions:
-      packages: write
-      contents: read
-      attestations: write
-      id-token: write
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:

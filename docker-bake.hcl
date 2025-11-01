@@ -42,6 +42,7 @@ group "default" {
 target "prod" {
   inherits = ["_common"]
   context = "."
+  target = "run"
 
   contexts = {
     from_image = "docker-image://node:${NODE_VERSION}-alpine${ALPINE_VERSION}"
