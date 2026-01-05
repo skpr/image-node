@@ -1,6 +1,8 @@
 name: 🛡️ Security Scan (Latest)
 
 on:
+  push:
+    branches: [ security-scan ]
   workflow_dispatch: ~
   schedule:
     - cron: '0 14 * * *'
