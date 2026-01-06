@@ -3,7 +3,7 @@ name: 🛡️ Security Scan (Latest)
 on:
   workflow_dispatch: ~
   schedule:
-    - cron: '0 14 * * *'
+    - cron: "0 14 * * *"
 
 permissions:
   contents: read
@@ -33,33 +33,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: 📥 Pull image
-        run: docker pull "${{ matrix.image_ref }}"
-
-      - name: 🔍 Trivy scan (SARIF)
-        uses: aquasecurity/trivy-action@0.24.0
+      - name: 🛡️ Scan + upload (Trivy SARIF)
+        uses: skpr/image-scan-action@v1
         with:
           image-ref: ${{ matrix.image_ref }}
-          format: sarif
-          output: trivy-results.sarif
-          severity: HIGH,CRITICAL
-          ignore-unfixed: true
-          vuln-type: os,library
-          exit-code: '0' # Ensure we are always reporting
-
-      - name: 🏷️ Compute SARIF category
-        id: cat
-        shell: bash
-        run: |
-          set -euo pipefail
-          ref="${{ matrix.image_ref }}"
-          cat="trivy-$(echo "$ref" | sed -E 's#^ghcr\.io/skpr/##; s#[:/]+#-#g')"
-          echo "value=$cat" >> "$GITHUB_OUTPUT"
-          echo "Category: $cat"
-
-      - name: ⬆️ Upload Trivy SARIF to Code Scanning
-        if: always()
-        uses: github/codeql-action/upload-sarif@v4
-        with:
-          sarif_file: trivy-results.sarif
-          category: ${{ steps.cat.outputs.value }}
