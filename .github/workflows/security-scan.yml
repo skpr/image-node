@@ -34,6 +34,6 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 🛡️ Scan + upload (Trivy SARIF)
-        uses: skpr/image-scan-action@v1
+        uses: skpr/scan-image-action@v1
         with:
           image-ref: ${{ matrix.image_ref }}
