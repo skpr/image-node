@@ -23,7 +23,9 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: 🏗️ Build  Docker image
-        uses: docker/bake-action@v6
+        uses: docker/bake-action@v6\
         env:
           NODE_VERSION: ${{ matrix.node }}
           STREAM: ${{ env.stream }}
+        with:
+          source: .

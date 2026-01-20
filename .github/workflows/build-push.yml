@@ -68,4 +68,5 @@ jobs:
           NODE_VERSION: ${{ matrix.node }}
           STREAM: ${{ inputs.stream }}
         with:
+          source: .
           push: ${{ inputs.push }}
