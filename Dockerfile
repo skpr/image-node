@@ -19,6 +19,7 @@ RUN apk add --no-cache \
   make \
   openssh-client \
   python3 \
+  rsync \
   tar \
   # Below are for packages such as https://www.npmjs.com/package/imagemin
   autoconf \
