@@ -18,16 +18,16 @@ jobs:
       fail-fast: false
       matrix:
         image_ref:
+          - ghcr.io/skpr/node:26-v3-latest
+          - ghcr.io/skpr/node:dev-26-v3-latest
           - ghcr.io/skpr/node:24-v3-latest
           - ghcr.io/skpr/node:dev-24-v3-latest
           - ghcr.io/skpr/node:22-v3-latest
           - ghcr.io/skpr/node:dev-22-v3-latest
-          - ghcr.io/skpr/node:20-v3-latest
-          - ghcr.io/skpr/node:dev-20-v3-latest
 
     steps:
       - name: 🔑 Log in to the GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
