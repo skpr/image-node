@@ -3,7 +3,7 @@ variable "NODE_VERSION" {
 }
 
 variable "ALPINE_VERSION" {
-  default = "3.21"
+  default = "3.23"
 }
 
 variable "STREAM" {
