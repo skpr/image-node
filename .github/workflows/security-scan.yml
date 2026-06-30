@@ -24,8 +24,6 @@ jobs:
           - ghcr.io/skpr/node:dev-24-v3-latest
           - ghcr.io/skpr/node:22-v3-latest
           - ghcr.io/skpr/node:dev-22-v3-latest
-          - ghcr.io/skpr/node:20-v3-latest
-          - ghcr.io/skpr/node:dev-20-v3-latest
 
     steps:
       - name: 🔑 Log in to the GitHub Container Registry

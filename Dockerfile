@@ -41,8 +41,10 @@ RUN mkdir /data && chown skpr:skpr /data
 
 WORKDIR /data
 
+# Ensure yarn is available before wrapping (Node 26+ no longer ships yarn).
+RUN npm install -g yarn
+
 # Replace npm with a wrapper script to enforce security.
-RUN npm install -g yarn --force
 RUN mv /usr/local/bin/npm /usr/local/bin/npm-unsafe
 ADD --chown=skpr:skpr bin/npm-wrapper /usr/local/bin/npm
 RUN chmod +x /usr/local/bin/npm
