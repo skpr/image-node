@@ -26,7 +26,6 @@ jobs:
         uses: docker/bake-action@v7
         env:
           NODE_VERSION: ${{ matrix.node }}
-          ALPINE_VERSION: '3.24'
           STREAM: ${{ env.stream }}
         with:
           source: .
