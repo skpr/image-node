@@ -42,7 +42,7 @@ jobs:
           - node: '22'
             alpine: '3.21'
           - node: '24'
-            alpine: '3.21'
+            alpine: '3.24'
           - node: '26'
             alpine: '3.24'
 
