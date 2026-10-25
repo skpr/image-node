@@ -15,4 +15,6 @@ jobs:
       stream: stable
       push: true
       branch: releases
+      node_versions: '["22","24"]'
+      alpine_version: '3.21'
     secrets: inherit

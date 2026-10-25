@@ -18,8 +18,8 @@ setup() {
   assert_output --partial "DISCLAIMER"
 }
 
-@test "pnpm --help exits 0 and mentions 'compiled to binary'" {
+@test "pnpm --help exits 0 and mentions 'Usage: pnpm [command] [flags]'" {
   run pnpm --help
   [ "$status" -eq 0 ]
-  assert_output --partial "compiled to binary"
+  assert_output --partial "Usage: pnpm [command] [flags]"
 }
